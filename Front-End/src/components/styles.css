@@ -26,6 +26,13 @@
     text-transform: uppercase;
 }
 
+.circle-profile img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    aspect-ratio: 1/1;
+}
+
 .loginNav {
     position: fixed;
     top: 0;
@@ -214,7 +221,7 @@
 .post-content p {
     font-size: 16px;
     display: flex;
-    align-self: center;
+    text-align: left;
 }
 
 .liked-button {
@@ -222,7 +229,7 @@
     color: white;
     border: none;
     padding: 8px 10px;
-    width: 60px;
+    min-width: 60px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -235,7 +242,8 @@
     color: #ff4757;
     border: 3px solid #ff4757;
     padding: 6px 10px;
-    width: 60px;
+    min-width: 60px;
+    max-height: 40px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -245,20 +253,245 @@
 
 /* ////////////// HOME ////////////// */
 
-#main{
+#main {
     display: flex;
     justify-content: center;
     padding-top: 80px;
 }
 
-#leftMain{
+#leftMain {
     width: 25%;
 }
 
-#rightMain{
+#centerMain {
     width: 50%;
     margin: auto;
-    margin-right: 25%;
     display: flex;
     justify-content: center;
+}
+
+#rightMain {
+    width: 25%;
+}
+
+/* ////////////// NEW POST ////////////// */
+/* Container styling */
+.upload-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f5;
+    padding: 20px;
+}
+
+.upload-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* File input styling */
+.file-input-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid black;
+    color: black;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .3s;
+    opacity: .6;
+}
+
+.file-input-label:hover {
+    opacity: 1;
+}
+
+.file-input {
+    display: none;
+}
+
+/* Text input styling */
+.text-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Submit button styling */
+.submit-button {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+/* Image preview styling */
+.image-preview {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.preview-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* ////////////// NEW STORY ////////////// */
+
+.fixed{
+    position: fixed;
+    width: 25%;
+}
+
+.add-story,
+.submitStory {
+    color: white;
+    border-radius: 50px;
+    background-color: #007bff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+.submitStory {
+    color: white;
+    border-radius: 50px;
+    background-color: #007bff;
+    width: fit-content;
+    font-weight: 500;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.add-story span {
+    display: none;
+}
+
+.add-story:hover {
+    width: fit-content;
+    padding: 0px 10px;
+}
+
+.add-story:hover span {
+    display: block;
+    margin-right: 5px;
+}
+
+.story div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 10px 0;
+    border-radius: 50px;
+    border: 1px solid rgb(224, 224, 224);
+    padding: 6px;
+    background-color: #0000001e;
+    cursor: pointer;
+}
+
+.story p {
+    font-weight: 500;
+}
+
+/* ////////////// STORY DESIGN ////////////// */
+
+.story-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    color: white;
+    position: relative;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 10px;
+    /* Adjusts the vertical position */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 99%;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+}
+
+.progress-bar-fill {
+    width: 0;
+    height: 100%;
+    background-color: #fff;
+    animation: fillProgressBar 8s linear forwards;
+    border-radius: 50px;
+}
+
+@keyframes fillProgressBar {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.story-header {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    gap: 10px;
+    top: 20px;
+    left: 20px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.story-image {
+    max-height: 80%;
+    max-width: 80%;
+    object-fit: cover;
 }

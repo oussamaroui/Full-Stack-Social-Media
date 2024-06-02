@@ -1,6 +1,7 @@
 import Aside from './Aside';
 import Nav from './Nav';
 import Post from './Post';
+import Story from './Story';
 
 const Home = () => {
 
@@ -11,8 +12,11 @@ const Home = () => {
                 <section id='leftMain'>
                     <Aside />
                 </section>
-                <section id='rightMain'>
+                <section id='centerMain'>
                     <Post />
+                </section>
+                <section id='rightMain'>
+                    <Story />
                 </section>
             </main>
         </>

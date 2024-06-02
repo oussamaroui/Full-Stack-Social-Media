@@ -8,10 +8,19 @@ const Profile = () => {
     const { users, error } = useContext(UserContext);
     const { currentUser } = useContext(UserContext);
     const { userId } = useParams();
+
+    if (error) {
+        return <div className="error-message">{error}</div>;
+    }
+
+    if (!users || users.length === 0) {
+        return <div>Loading users...</div>;
+    }
+
     const user = users.find(user => user.id === parseInt(userId));
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>User not found</div>;
     }
 
     const styles = {
@@ -25,39 +34,36 @@ const Profile = () => {
         <section>
             <div className="profile-container">
                 <div className="profile-header">
-                    <CircleProfile first_name={user.first_name} last_name={user.last_name} style={styles} />
+                    <CircleProfile pic={user.profile_pic} first_name={user.first_name} last_name={user.last_name} style={styles} />
                     <div className="profile-details">
                         <h2>{user.first_name} {user.last_name}</h2>
                         <p>{user.email}</p>
-                        {
-                            currentUser.id !== user.id &&
+                        {currentUser && currentUser.id !== user.id && (
                             <button className="follow-button">Follow</button>
-                        }
-
-                        {
-                            currentUser.id === user.id &&
+                        )}
+                        {currentUser && currentUser.id === user.id && (
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <Link to="/new-post">
                                     <button className="follow-button">New Post</button>
                                 </Link>
                                 <button className="logout-button">Logout</button>
                             </div>
-                        }
+                        )}
                     </div>
                 </div>
-                {error && <div className="error-message">{error}</div>}
             </div>
             <div className="image-grid">
-                {user.images.map((image, index) => (
+                {user.posts && user.posts.map((postData, index) => (
                     <div key={index} className="image-container">
                         <div>
-                            <img src={`http://localhost:8000/storage/${image}`} alt={`User Image ${index + 1}`} className="user-image" />
+                            <img loading='lazy' src={`http://localhost:8000/storage/${postData.image}`} alt={`User Image ${index + 1}`} className="user-image" />
                         </div>
-                        okok
+                        <div className="likes-count" style={{ color: 'red' }}>
+                            ❤ {postData.likes_count}
+                        </div>
                     </div>
                 ))}
             </div>
-
         </section>
     );
 };

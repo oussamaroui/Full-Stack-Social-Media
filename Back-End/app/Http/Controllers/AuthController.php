@@ -15,20 +15,22 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'profile_pic' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
 
-        $user = User::create([
-            'first_name' => $registerUserData['first_name'],
-            'last_name' => $registerUserData['last_name'],
-            'email' => $registerUserData['email'],
-            'password' => Hash::make($registerUserData['password']),
-        ]);
+        if ($request->hasFile('profile_pic')) {
+            $profilePic = $request->file('profile_pic')->store('images', 'public');
+            $registerUserData['profile_pic'] = $profilePic;
+        }
+
+        $user = User::create($registerUserData);
 
         return response()->json([
             'message' => 'User Created',
             'user' => $user,
         ], 201);
     }
+
 
     public function login(Request $request)
     {

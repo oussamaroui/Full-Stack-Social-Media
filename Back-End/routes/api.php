@@ -16,10 +16,14 @@ Route::post('logout',[AuthController::class,'logout'])->middleware('auth:sanctum
 
 Route::get('users',[UserController::class,'index']);
 Route::post('new-post',[UserController::class,'store']);
+Route::post('new-story',[UserController::class,'handleStory']);
+Route::get('stories',[UserController::class,'stories']);
 
 
 Route::get('posts',[PostController::class,'index']);
 Route::post('like',[PostController::class,'like']);
 Route::get('likes',[PostController::class,'allLikes']);
+
+
 
 

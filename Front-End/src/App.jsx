@@ -5,6 +5,7 @@ import Login from './components/auth/Login.jsx';
 import { UserProvider } from './components/UserContext';
 import Profile from './components/Profile.jsx';
 import NewPost from './components/NewPost.jsx';
+import ShowStory from './components/ShowStory.jsx';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/new-post" element={<NewPost />} />
+          <Route path="/story/:storyId" element={<ShowStory />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

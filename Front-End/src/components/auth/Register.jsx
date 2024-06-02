@@ -8,7 +8,7 @@ const Register = () => {
     const [last_name, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [pic, setPic] = useState(null); // Change from "" to null to handle file
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -19,19 +19,20 @@ const Register = () => {
         setSuccess("");
         setIsLoading(true);
 
-        if (password !== confirmPassword) {
-            setError("Passwords do not match");
-            setIsLoading(false);
-            return;
+        const formData = new FormData();
+        formData.append('first_name', first_name);
+        formData.append('last_name', last_name);
+        formData.append('email', email);
+        formData.append('password', password);
+        if (pic) {
+            formData.append('profile_pic', pic);
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/register', {
-                first_name: first_name,
-                last_name: last_name,
-                email: email,
-                password: password,
-                password_confirmation: confirmPassword,
+            const response = await axios.post('http://127.0.0.1:8000/api/register', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
 
             if (response.status === 201) {
@@ -40,7 +41,7 @@ const Register = () => {
                 setLastName("");
                 setEmail("");
                 setPassword("");
-                setConfirmPassword("");
+                setPic(null); // Reset file input
             } else {
                 setError("Registration failed");
             }
@@ -72,7 +73,7 @@ const Register = () => {
                 <form onSubmit={handleSubmit}>
                     <p className="form-title">Register</p>
                     <div className="form-field">
-                        <label htmlFor="first_name">Name</label>
+                        <label htmlFor="first_name">First Name</label>
                         <input
                             id="first_name"
                             type="text"
@@ -84,7 +85,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="form-field">
-                        <label htmlFor="last_name">Name</label>
+                        <label htmlFor="last_name">Last Name</label>
                         <input
                             id="last_name"
                             type="text"
@@ -121,16 +122,12 @@ const Register = () => {
                         />
                     </div>
                     <div className="form-field">
-                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <label htmlFor="profile_pic">Profile Picture</label>
                         <input
-                            id="confirmPassword"
-                            type="password"
-                            name="confirmPassword"
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            value={confirmPassword}
-                            placeholder="Confirm Password"
-                            required
-                            minLength="8"
+                            id="profile_pic"
+                            type="file"
+                            name="profile_pic"
+                            onChange={(e) => setPic(e.target.files[0])}
                         />
                     </div>
                     {error && <div className="error-message">{error}</div>}

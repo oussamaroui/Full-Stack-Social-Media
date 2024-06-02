@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Story;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -18,11 +20,16 @@ class UserController extends Controller
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'email' => $user->email,
-                'images' => Post::where('user_id', $user->id)->pluck('image')->toArray()
+                'profile_pic' => $user->profile_pic,
+                'posts' => Post::where('user_id', $user->id)->get()->map(function ($post) {
+                    return [
+                        'image' => $post->image,
+                        'likes_count' => $post->likes()->where('like_value', 1)->count(),
+                    ];
+                })->toArray(),
             ];
         });
 
-        // Return users' data as JSON response
         return response()->json($serializedUsers);
     }
 
@@ -30,7 +37,7 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'user_id' => 'required',
-            'caption' => 'required|string|max:255',
+            'caption' => 'required|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
@@ -46,4 +53,35 @@ class UserController extends Controller
             'post' => $post,
         ], 201);
     }
+
+    public function handleStory(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'story' => 'image|mimes:jpeg,png,jpg,gif',
+        ]);
+
+        $storyPath = $request->file('story')->store('stories', 'public');
+        $validatedData['story'] = $storyPath;
+
+        $story = Story::create($validatedData);
+
+        return response()->json([
+            'message' => 'Story created successfully',
+            'story' => $story,
+        ], 201);
+    }
+
+    public function stories(){
+        $stories = Story::with(['user'])->get();
+        return response()->json($stories);
+    }
+    // public function destoryIn24h(){
+    //     $stories = Story::all();
+    //     foreach ( $stories as $story){
+    //         if (Carbon::date_diff($story->created_at, now() > 1)) {
+    //             Story::delete($story);
+    //         }
+    //     }
+    // }
 }

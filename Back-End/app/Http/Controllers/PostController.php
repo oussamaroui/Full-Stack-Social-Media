@@ -10,9 +10,11 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::withCount(['likes' => function ($query) {
-            $query->where('like_value', 1);
-        }])->with('user')->get();
+        // $posts = Post::withCount(['likes' => function ($query) {
+        //     $query->where('like_value', 1);
+        // }])->with('user')->get();
+
+        $posts = Post::with(['likes', 'user'])->get();
 
         return response()->json($posts);
     }

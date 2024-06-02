@@ -23,6 +23,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'profile_pic',
     ];
 
     /**
@@ -54,5 +55,9 @@ class User extends Authenticatable
 
     public function likes(){
         return $this->hasMany(Like::class);
+    }
+
+    public function story(){
+        return $this->belongsTo(Story::class);
     }
 }
